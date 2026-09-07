@@ -29,26 +29,38 @@ from classifier import classifier
 #       results_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
+
 def classify_images(images_dir, results_dic, model):
     """
-    Creates classifier labels with classifier function, compares pet labels to 
-    the classifier labels, and adds the classifier label and the comparison of 
-    the labels to the results dictionary.
+    Classifies pet images and compares classifier labels with
+    the true pet labels.
+
+    Parameters:
+        images_dir (str): Directory containing pet images.
+        results_dic (dict): Dictionary containing pet image labels.
+        model (str): CNN architecture to use.
+
+    Returns:
+        None
     """
 
-    # Loop through each image filename in the results dictionary
     for key in results_dic:
-        
-        # Classify the image and compare the result to the pet image label
-        model_label = classifier(images_dir + key, model)
+
+        # Create the complete path to the image
+        image_path = os.path.join(images_dir, key)
+
+        # Classify the image
+        model_label = classifier(image_path, model)
+
+        # Normalize classifier label
         model_label = model_label.lower().strip()
-        
-        # Determine if the classifier label matches the pet image label
-        if results_dic[key][0] in model_label:
+
+        # Compare the true pet label with the classifier label
+        if results_dic[key][0] == model_label:
             match = 1
         else:
             match = 0
-        
-        # Add the classifier label and the match result to the results dictionary
+
+        # Add classifier label and match result
         results_dic[key].extend([model_label, match])
-   
+
