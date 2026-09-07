@@ -23,59 +23,57 @@ from os import listdir
 #       in the return statement with results_dic dictionary that you create 
 #       with this function
 # 
+from os import listdir
+
+
 def get_pet_labels(image_dir):
     """
-    Creates a dictionary of pet labels (results_dic) based upon the filenames 
-    of the image files. These pet image labels are used to check the accuracy 
-    of the labels that are returned by the classifier function, since the 
-    filenames of the images contain the true identity of the pet in the image.
-    Be sure to format the pet labels so that they are in all lower case letters
-    and with leading and trailing whitespace characters stripped from them.
-    (ex. filename = 'Boston_terrier_02259.jpg' Pet label = 'boston terrier')
+    Creates a dictionary of pet labels based on image filenames.
+
     Parameters:
-     image_dir - The (full) path to the folder of images that are to be
-                 classified by the classifier function (string)
+        image_dir (str): Directory containing pet images.
+
     Returns:
-      results_dic - Dictionary with 'key' as image filename and 'value' as a 
-      List. The list contains for following item:
-         index 0 = pet image label (string)
+        dict: Dictionary where each key is an image filename and
+              each value is a list containing the pet label.
     """
-    # Retrieve the filenames from folder pet_images/
+
     filename_list = listdir(image_dir)
-    
-    # Create empty dictionary named results_dic
-    results_dic = dict()
-    
-    # Process through each file in the directory, extracting only the words
-    # that contain the pet image label
-    for idx in range(0, len(filename_list), 1):
-        
-        # Skip file if starts with . (like .DS_Store of Mac OS) because it 
-        # isn't an pet image file
-        if filename_list[idx][0] != ".":
-            # Creates temporary label variable to hold pet label name extracted 
-            # from filename
-            pet_label = ""
-            # Sets string to lower case letters
-            low_pet_image = filename_list[idx].lower()
-            # Splits lower case string by _ to break into words 
-            word_list_pet_image = low_pet_image.split("_")
-            
-            # Loops to check if word in pet name is only alphabetic characters
-            for word in word_list_pet_image:
-                if word.isalpha():
-                    pet_label += word + " "
-            
-            # Strip off starting/trailing whitespace characters 
-            pet_label = pet_label.strip()
-            
-            # If filename doesn't already exist in dictionary add it and the 
-            # pet label to the dictionary otherwise print an error message 
-            if filename_list[idx] not in results_dic:
-                results_dic[filename_list[idx]] = [pet_label]
-            else:
-                print("** Warning: Duplicate files exist in directory:", 
-                      filename_list[idx])
-    
-    # Return the results dictionary
+
+    results_dic = {}
+
+    for filename in filename_list:
+
+        # Ignore hidden files such as .DS_Store
+        if filename.startswith('.'):
+            continue
+
+        # Convert filename to lowercase
+        low_pet_image = filename.lower()
+
+        # Split filename using underscores
+        word_list_pet_image = low_pet_image.split('_')
+
+        # Build the pet label
+        pet_label = ""
+
+        for word in word_list_pet_image:
+
+            # Only include alphabetic words
+            if word.isalpha():
+                pet_label += word + " "
+
+        # Remove leading/trailing whitespace
+        pet_label = pet_label.strip()
+
+        # Add image filename and pet label to dictionary
+        if filename not in results_dic:
+            results_dic[filename] = [pet_label]
+        else:
+            print(
+                "** Warning: Duplicate files exist in directory:",
+                filename
+            )
+
     return results_dic
+
