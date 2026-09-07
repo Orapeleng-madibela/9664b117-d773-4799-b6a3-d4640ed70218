@@ -40,39 +40,42 @@ def get_pet_labels(image_dir):
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
-       # Create empty dictionary
-    results_dic = dict()
-
-    # Retrieve list of filenames from image directory
+    # Retrieve the filenames from folder pet_images/
     filename_list = listdir(image_dir)
-
-    # Process each filename
-    for filename in filename_list:
-
-        # Convert filename to lowercase
-        low_pet_image = filename.lower()
-
-        # Split filename into words using underscore
-        word_list_pet_image = low_pet_image.split("_")
-
-        # Create empty string for pet label
-        pet_name = ""
-
-        # Adding alphabetic words to pet label
-        for word in word_list_pet_image:
-            if word.isalpha():
-                pet_name += word + " "
-
-        # Remove leading and trailling whitespace
-        pet_name = pet_name.strip()
-
-        # Add filename and pet label to dictionary
-        if filename not in results_dic:
-            results_dic[filename] = [pet_name]
-        else:
-            print("** Warning: Key=", filename,
-                  "already exists in results_dic with value =",
-                  results_dic[filename])
-
+    
+    # Create empty dictionary named results_dic
+    results_dic = dict()
+    
+    # Process through each file in the directory, extracting only the words
+    # that contain the pet image label
+    for idx in range(0, len(filename_list), 1):
+        
+        # Skip file if starts with . (like .DS_Store of Mac OS) because it 
+        # isn't an pet image file
+        if filename_list[idx][0] != ".":
+            # Creates temporary label variable to hold pet label name extracted 
+            # from filename
+            pet_label = ""
+            # Sets string to lower case letters
+            low_pet_image = filename_list[idx].lower()
+            # Splits lower case string by _ to break into words 
+            word_list_pet_image = low_pet_image.split("_")
+            
+            # Loops to check if word in pet name is only alphabetic characters
+            for word in word_list_pet_image:
+                if word.isalpha():
+                    pet_label += word + " "
+            
+            # Strip off starting/trailing whitespace characters 
+            pet_label = pet_label.strip()
+            
+            # If filename doesn't already exist in dictionary add it and the 
+            # pet label to the dictionary otherwise print an error message 
+            if filename_list[idx] not in results_dic:
+                results_dic[filename_list[idx]] = [pet_label]
+            else:
+                print("** Warning: Duplicate files exist in directory:", 
+                      filename_list[idx])
+    
     # Return the results dictionary
     return results_dic
