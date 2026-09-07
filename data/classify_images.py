@@ -38,21 +38,17 @@ def classify_images(images_dir, results_dic, model):
 
     # Loop through each image filename in the results dictionary
     for key in results_dic:
-
-        # Create the full path to the image
-        image_path = images_dir + "/" + key
-
-        # Classify the image using the selected CNN model
-        classifier_label = classifier(image_path, model)
-
-        # Format the classifier label
-        classifier_label = classifier_label.lower().strip()
-
-        # Get the pet image label
-        pet_label = results_dic[key][0]
-
-        # Compare the pet label with the classifier label
-        if pet_label in classifier_label:
-            results_dic[key].extend([classifier_label, 1])
+        
+        # Classify the image and compare the result to the pet image label
+        model_label = classifier(images_dir + key, model)
+        model_label = model_label.lower().strip()
+        
+        # Determine if the classifier label matches the pet image label
+        if results_dic[key][0] in model_label:
+            match = 1
         else:
-            results_dic[key].extend([classifier_label, 0])
+            match = 0
+        
+        # Add the classifier label and the match result to the results dictionary
+        results_dic[key].extend([model_label, match])
+   
