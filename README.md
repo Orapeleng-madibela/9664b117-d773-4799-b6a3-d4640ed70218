@@ -1,8 +1,8 @@
-# 🐶 Image Classification for a City Dog Show
+# 🐶 Project: Using a Pre-trained Image Classifier to Identify Dog Breeds
 
 ## 📌 Project Overview
 
-This project is an **image classification application developed in Python** as part of the Udacity **AI Programming with Python / Image Classification for a City Dog Show** project.
+This project is an **image classification application developed in Python** as part of the Udacity **Future AWS AI Programmer** project.
 
 The application uses **pre-trained Convolutional Neural Networks (CNNs)** to analyze images of pets and determine:
 
